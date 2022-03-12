@@ -37,15 +37,33 @@ nrow(lq_ak)
 ```
 ### Exercise 3
 
-...
+```{r joining_dataframes}
+dn_lq_ak <- full_join(dn_ak, lq_ak, by = "state")
+dn_lq_ak
+```
 
 ### Exercise 4
+There are 6 observations in the dn_lq_ak data frame. The variables are: .x[address, city, state, zip, longitude, latitude] and .y[address, city, zip, longitude, latitude]
 
-...
 
 ### Exercise 5
 
-...
+```{r calculating_distance}
+library(pracma)
+haversine <- haversine(longitude.x, latitude.x, longitude.y, latitude.y, round = 3 )
+  long1 = longitude.x * pi / 180
+  lat1 = latitude.x * pi / 180
+  long2 = longitude.y * pi / 180
+  lat2 = latitude.y * pi / 180
+  
+  R = 6371
+  
+  a = sin((lat2 - lat1)/2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1)/2)^2
+  d = R * 2 *asin(sqrt(a))
+  
+  return( round(d,round) )
+ 
+```
 
 ### Exercise 6
 
