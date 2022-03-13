@@ -72,7 +72,7 @@ haversine <- function(long1, lat1, long2, lat2, round = 3) {
 
 ```{r calculating_distance}
 dn_lq_ak <- dn_lq_ak %>% 
-  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y, round = 3))
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
 ```
 
 ### Exercise 7
@@ -90,11 +90,104 @@ library(forcats)
 dn_lq_ak_mindist %>% 
   mutate(address.x = fct_reorder(address.x, closest)) %>% 
 ggplot(dn_lq_ak_mindist, mapping = aes(x = address.x, y = closest)) +
-  geom_col()
+  geom_col() +
+  ggtitle("Distance between Denny's and Laquinta in AK")
+
+summary(dn_lq_ak_mindist)
+
 ```
 
 ### Exercise 9
 
 ```{r NC_analysis}
+dn_nc <- dennys %>% 
+  filter(state == "NC")
+nrow(dn_nc)
 
+lq_nc <- laquinta %>% 
+  filter(state == "NC")
+nrow(lq_nc)
+
+dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
+dn_lq_nc
+
+dn_lq_nc <- dn_lq_nc %>% 
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+dn_lq_nc_mindist <- dn_lq_nc %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+
+dn_lq_nc_mindist %>% 
+  mutate(address.x = fct_reorder(address.x, closest)) %>% 
+ggplot(dn_lq_nc_mindist, mapping = aes(x = address.x, y = closest)) +
+  geom_col() +
+  coord_flip() +
+  ggtitle("Distance between Denny's and Laquinta in NC")
+
+summary(dn_lq_nc_mindist)
 ```
+
+### Exercise 10
+```{r TX_analysis}
+dn_tx <- dennys %>% 
+  filter(state == "TX")
+nrow(dn_tx)
+
+lq_tx <- laquinta %>% 
+  filter(state == "TX")
+nrow(lq_tx)
+
+dn_lq_tx <- full_join(dn_tx, lq_tx, by = "state")
+dn_lq_tx
+
+dn_lq_tx <- dn_lq_tx %>% 
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+dn_lq_tx_mindist <- dn_lq_tx %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+            
+dn_lq_tx_mindist %>% 
+  mutate(address.x = fct_reorder(address.x, closest)) %>% 
+ggplot(dn_lq_tx_mindist, mapping = aes(x = address.x, y = closest)) +
+  geom_col() +
+  coord_flip()+
+  ggtitle("Distance between Denny's and Laquinta in TX")
+
+summary(dn_lq_tx_mindist)
+```
+
+### Exercise 11
+```{r VA_analysis}
+dn_va <- dennys %>% 
+  filter(state == "VA")
+nrow(dn_va)
+
+lq_va <- laquinta %>% 
+  filter(state == "VA")
+nrow(lq_va)
+
+dn_lq_va <- full_join(dn_va, lq_va, by = "state")
+dn_lq_va
+
+dn_lq_va <- dn_lq_va %>% 
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+dn_lq_va_mindist <- dn_lq_va %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+            
+dn_lq_va_mindist %>% 
+  mutate(address.x = fct_reorder(address.x, closest)) %>% 
+ggplot(dn_lq_va_mindist, mapping = aes(x = address.x, y = closest)) +
+  geom_col() +
+  coord_flip()+
+  ggtitle("Distance between Denny's and Laquinta in VA")
+
+summary(dn_lq_va_mindist)
+```
+
+### Exercise 12
+
+It appears that the Mitch Hedberg joke applies best to Texas considering the number of locations that have a distance of less than 10 miles between them.
