@@ -10,6 +10,7 @@ output: github_document
 ```{r load-packages, message = FALSE}
 library(tidyverse) 
 library(dsbox) 
+library(dplyr)
 ```
 
 ```{r load-data, message = FALSE}
@@ -69,6 +70,31 @@ haversine <- function(long1, lat1, long2, lat2, round = 3) {
 
 ### Exercise 6
 
-...
+```{r calculating_distance}
+dn_lq_ak <- dn_lq_ak %>% 
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y, round = 3))
+```
 
-Add exercise headings as needed.
+### Exercise 7
+
+```{r minimum_distance}
+dn_lq_ak_mindist <- dn_lq_ak %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+```
+
+### Exercise 8
+
+```{r distribution}
+library(forcats)
+dn_lq_ak_mindist %>% 
+  mutate(address.x = fct_reorder(address.x, closest)) %>% 
+ggplot(dn_lq_ak_mindist, mapping = aes(x = address.x, y = closest)) +
+  geom_col()
+```
+
+### Exercise 9
+
+```{r NC_analysis}
+
+```
